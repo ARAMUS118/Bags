@@ -107,9 +107,7 @@
     .btn:active{transform: translateY(0px) scale(.99)}
     .btn[hidden]{display:none !important;}
 
-    main{
-      padding-top: 22px;
-    }
+    main{ padding-top: 22px; }
 
     /* HOME GRID */
     .section-title{
@@ -168,9 +166,7 @@
       transform: scale(1.01);
       transition: transform .35s ease;
     }
-    .tile:hover .media img{
-      transform: scale(1.06);
-    }
+    .tile:hover .media img{ transform: scale(1.06); }
 
     .tile .overlay{
       position:absolute;
@@ -358,12 +354,18 @@
       display:flex;
       align-items:center;
       justify-content:center;
+
+      /* Enable smooth touch gestures inside the lightbox */
+      touch-action: pan-y; /* allow vertical scroll, handle horizontal swipe ourselves */
     }
     .lb-body img{
       width:100%;
       height: min(72vh, 720px);
       object-fit: contain;
       background: rgba(0,0,0,.25);
+
+      user-select: none;
+      -webkit-user-drag: none;
     }
     .lb-nav{
       display:flex;
@@ -398,12 +400,8 @@
       </div>
 
       <div class="top-actions">
-        <button id="backBtn" class="btn" hidden title="Back to catalog">
-          ← Back
-        </button>
-        <button id="homeBtn" class="btn" title="Home">
-          Catalog
-        </button>
+        <button id="backBtn" class="btn" hidden title="Back to catalog">← Back</button>
+        <button id="homeBtn" class="btn" title="Home">Catalog</button>
       </div>
     </div>
   </header>
@@ -435,7 +433,7 @@
           <!-- thumbnails injected by JS -->
         </div>
 
-        <div class="hint">Tip: Use ← / → keys in the lightbox.</div>
+        <div class="hint">Tip: Swipe left/right on mobile, or use ← / → in the lightbox.</div>
       </section>
 
       <footer>
@@ -519,6 +517,8 @@
     const nextBtn = document.getElementById("nextBtn");
     const closeBtn = document.getElementById("closeBtn");
 
+    const lbBody = document.querySelector(".lb-body");
+
     document.getElementById("year").textContent = new Date().getFullYear();
 
     // --------- render home tiles ----------
@@ -526,7 +526,6 @@
       catalogGrid.innerHTML = "";
 
       // layout: on desktop use 2 + 3 (nice boutique grid)
-      // we can assign classes to vary spans
       collections.forEach((c, idx) => {
         const tile = document.createElement("article");
         tile.className = "tile " + (idx < 2 ? "four" : "third");
@@ -658,6 +657,63 @@
       if (e.key === "ArrowLeft") prevImage();
       if (e.key === "ArrowRight") nextImage();
     });
+
+    // --------- Swipe support for lightbox (mobile + touch devices) ----------
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isSwiping = false;
+
+    const SWIPE_MIN_X = 45;     // px
+    const SWIPE_MAX_Y = 80;     // px (avoid triggering on vertical scroll)
+    const SWIPE_MAX_TIME = 700; // ms
+
+    function onTouchStart(e) {
+      if (!lightbox.classList.contains("open")) return;
+      const t = e.touches[0];
+      touchStartX = t.clientX;
+      touchStartY = t.clientY;
+      touchStartTime = Date.now();
+      isSwiping = true;
+    }
+
+    function onTouchMove(e) {
+      if (!isSwiping) return;
+      const t = e.touches[0];
+      const dx = Math.abs(t.clientX - touchStartX);
+      const dy = Math.abs(t.clientY - touchStartY);
+
+      // If user is mostly scrolling vertically, cancel swipe
+      if (dy > dx && dy > 14) {
+        isSwiping = false;
+      }
+    }
+
+    function onTouchEnd(e) {
+      if (!lightbox.classList.contains("open")) return;
+      if (!isSwiping) return;
+
+      const dt = Date.now() - touchStartTime;
+      const changed = e.changedTouches[0];
+      const endX = changed.clientX;
+      const endY = changed.clientY;
+
+      const dx = endX - touchStartX;
+      const dy = endY - touchStartY;
+
+      // qualify swipe
+      if (dt <= SWIPE_MAX_TIME && Math.abs(dx) >= SWIPE_MIN_X && Math.abs(dy) <= SWIPE_MAX_Y) {
+        if (dx < 0) nextImage();  // swipe left => next
+        else prevImage();         // swipe right => prev
+      }
+
+      isSwiping = false;
+    }
+
+    // Attach swipe handlers to the image area (works for all galleries)
+    lbBody.addEventListener("touchstart", onTouchStart, { passive: true });
+    lbBody.addEventListener("touchmove", onTouchMove, { passive: true });
+    lbBody.addEventListener("touchend", onTouchEnd, { passive: true });
 
     // --------- load by hash (so you can link directly to a collection) ----------
     function openFromHash() {

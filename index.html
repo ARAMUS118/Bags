@@ -1,1 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kashvich — Catalog</title>
+  <meta name="description" content="Kashvich luxury leather bag catalog." />
 
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --panel:rgba(255,255,255,.04);
+      --panel2:rgba(255,255,255,.06);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --hairline:rgba(255,255,255,.10);
+      --shadow: 0 18px 45px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 24px;
+      --max: 1180px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(255,255,255,.08), transparent 55%),
+        radial-gradient(900px 700px at 90% 10%, rgba(255,255,255,.06), transparent 50%),
+        var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      letter-spacing:.2px;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%}
+
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 28px 18px 64px;
+    }
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(11,11,13,.92), rgba(11,11,13,.65));
+      border-bottom:1px solid var(--hairline);
+    }
+    .header-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 18px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      line-height:1;
+    }
+    .brand .name{
+      font-size: 22px;
+      font-weight: 650;
+      letter-spacing: 2.6px;
+      text-transform: uppercase;
+    }
+    .brand .tag{
+      font-size: 12px;
+      color:var(--muted);
+      letter-spacing: .9px;
+      text-transform: uppercase;
+    }
+
+    .top-actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .btn{
+      border:1px solid var(--hairline);
+      background: rgba(255,255,255,.03);
+      color:var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing:.3px;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      cursor:pointer;
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn:active{transform: translateY(0px) scale(.99)}
+    .btn[hidden]{display:none !important;}
+
+    main{
+      padding-top: 22px;
+    }
+
+    /* HOME GRID */
+    .section-title{
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      margin: 14px 0 14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .tile{
+      grid-column: span 12;
+      border-radius: var(--radius2);
+      overflow:hidden;
+      border:1px solid var(--hairline);
+      background: linear-gradient(to bottom, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      position:relative;
+      cursor:pointer;
+      transition: transform .18s ease, border-color .2s ease, background .2s ease;
+      min-height: 260px;
+    }
+    .tile:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.18);
+      background: linear-gradient(to bottom, rgba(255,255,255,.09), rgba(255,255,255,.03));
+    }
+
+    .tile figure{
+      margin:0;
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .tile .media{
+      position:relative;
+      flex: 1;
+      background: rgba(255,255,255,.02);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      min-height: 240px;
+    }
+    .tile .media img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      transform: scale(1.01);
+      transition: transform .35s ease;
+    }
+    .tile:hover .media img{
+      transform: scale(1.06);
+    }
+
+    .tile .overlay{
+      position:absolute;
+      inset:0;
+      background: radial-gradient(900px 340px at 30% 0%, rgba(0,0,0,.10), rgba(0,0,0,.55));
+      pointer-events:none;
+    }
+
+    .tile .meta{
+      padding: 14px 16px 16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      border-top:1px solid var(--hairline);
+      background: rgba(0,0,0,.20);
+    }
+    .tile .meta .label{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .tile .meta .title{
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: .6px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .tile .meta .count{
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .3px;
+    }
+    .chip{
+      font-size: 11px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.78);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      white-space:nowrap;
+    }
+
+    /* responsive layout for tiles */
+    @media (min-width: 720px){
+      .tile{min-height: 340px;}
+      .tile.four{grid-column: span 6;}
+      .tile.third{grid-column: span 4;}
+    }
+    @media (min-width: 1020px){
+      .tile{min-height: 360px;}
+      .tile.third{grid-column: span 4;}
+      .tile.four{grid-column: span 6;}
+    }
+
+    /* GALLERY */
+    .gallery{
+      display:none;
+      margin-top: 14px;
+    }
+    .gallery.active{display:block;}
+
+    .gallery-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin: 10px 0 14px;
+      padding: 14px 14px;
+      border:1px solid var(--hairline);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
+    }
+    .gallery-head .left{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+    .gallery-head h2{
+      margin:0;
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+    .gallery-head .sub{
+      margin:0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .thumbs{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    @media (min-width: 720px){
+      .thumbs{grid-template-columns: repeat(3, 1fr);}
+    }
+    @media (min-width: 1020px){
+      .thumbs{grid-template-columns: repeat(4, 1fr);}
+    }
+
+    .thumb{
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid var(--hairline);
+      background: rgba(255,255,255,.02);
+      box-shadow: 0 12px 30px rgba(0,0,0,.45);
+      cursor:pointer;
+      position:relative;
+      transition: transform .18s ease, border-color .2s ease;
+    }
+    .thumb:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.18);
+    }
+    .thumb img{
+      width:100%;
+      height: 240px;
+      object-fit: cover;
+    }
+    @media (min-width: 720px){
+      .thumb img{height: 230px;}
+    }
+    .thumb .num{
+      position:absolute;
+      top:10px;
+      left:10px;
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.35);
+      color: rgba(255,255,255,.85);
+      backdrop-filter: blur(6px);
+    }
+
+    /* LIGHTBOX */
+    .lightbox{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.78);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:50;
+      padding: 18px;
+    }
+    .lightbox.open{display:flex;}
+    .lb-card{
+      width:min(980px, 100%);
+      border-radius: 22px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(15,15,18,.92);
+      box-shadow: 0 30px 90px rgba(0,0,0,.75);
+      position:relative;
+    }
+    .lb-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .lb-top .cap{
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      min-width:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .lb-body{
+      background: rgba(0,0,0,.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .lb-body img{
+      width:100%;
+      height: min(72vh, 720px);
+      object-fit: contain;
+      background: rgba(0,0,0,.25);
+    }
+    .lb-nav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .hint{
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: .3px;
+      text-align:center;
+    }
+
+    footer{
+      margin-top: 34px;
+      color: rgba(255,255,255,.45);
+      font-size: 12px;
+      letter-spacing: .4px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="name">Kashvich</div>
+        <div class="tag">Luxury Leather Catalog</div>
+      </div>
+
+      <div class="top-actions">
+        <button id="backBtn" class="btn" hidden title="Back to catalog">
+          ← Back
+        </button>
+        <button id="homeBtn" class="btn" title="Home">
+          Catalog
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <main>
+      <!-- HOME / MAIN CATALOG -->
+      <div id="homeView">
+        <div class="section-title">Catalog</div>
+
+        <div class="grid" id="catalogGrid">
+          <!-- tiles injected by JS -->
+        </div>
+
+        <div class="hint">Click a collection to view all photos.</div>
+      </div>
+
+      <!-- GALLERY VIEW -->
+      <section id="galleryView" class="gallery" aria-live="polite">
+        <div class="gallery-head">
+          <div class="left">
+            <h2 id="galleryTitle">Collection</h2>
+            <p class="sub" id="gallerySub">0 photos</p>
+          </div>
+          <span class="chip" id="galleryChip">Gallery</span>
+        </div>
+
+        <div class="thumbs" id="thumbGrid">
+          <!-- thumbnails injected by JS -->
+        </div>
+
+        <div class="hint">Tip: Use ← / → keys in the lightbox.</div>
+      </section>
+
+      <footer>
+        © <span id="year"></span> Kashvich
+      </footer>
+    </main>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lb-card">
+      <div class="lb-top">
+        <div class="cap" id="lbCaption">Image</div>
+        <div class="lb-nav">
+          <button class="btn" id="prevBtn" title="Previous (←)">←</button>
+          <button class="btn" id="nextBtn" title="Next (→)">→</button>
+          <button class="btn" id="closeBtn" title="Close (Esc)">✕</button>
+        </div>
+      </div>
+      <div class="lb-body">
+        <img id="lbImg" alt="Catalog image" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --------- CONFIG: your collections and file names ----------
+    // Assumes images are in the same folder as index.html.
+    // If you put images in folders, change each src to "FolderName/FileName.ext"
+    const collections = [
+      {
+        key: "farah",
+        name: "Farah",
+        cover: "Farah_1.png",
+        files: ["Farah_1.png", "Farah_2.png"]
+      },
+      {
+        key: "laprisa",
+        name: "La Prisa",
+        cover: "Laprisa_1.jpg",
+        files: ["Laprisa_1.jpg", "Laprisa_2.jpg", "Laprisa_3.jpg"]
+      },
+      {
+        key: "lusin",
+        name: "Lusin",
+        cover: "Lusin_1.png",
+        files: ["Lusin_1.png", "Lusin_2.png", "Lusin_3.png"]
+      },
+      {
+        key: "slancio",
+        name: "Slancio",
+        cover: "Slancio_1.png",
+        files: ["Slancio_1.png", "Slancio_2.png", "Slancio_3.png", "Slancio_4.png"]
+      },
+      {
+        key: "extras",
+        name: "Extras",
+        cover: "1.PNG",
+        files: Array.from({ length: 15 }, (_, i) => `${i + 1}.PNG`)
+      }
+    ];
+
+    // --------- UI state ----------
+    let activeCollection = null;
+    let lightboxIndex = 0;
+
+    // --------- elements ----------
+    const catalogGrid = document.getElementById("catalogGrid");
+    const homeView = document.getElementById("homeView");
+    const galleryView = document.getElementById("galleryView");
+    const galleryTitle = document.getElementById("galleryTitle");
+    const gallerySub = document.getElementById("gallerySub");
+    const thumbGrid = document.getElementById("thumbGrid");
+    const backBtn = document.getElementById("backBtn");
+    const homeBtn = document.getElementById("homeBtn");
+
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbCaption = document.getElementById("lbCaption");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // --------- render home tiles ----------
+    function renderCatalog() {
+      catalogGrid.innerHTML = "";
+
+      // layout: on desktop use 2 + 3 (nice boutique grid)
+      // we can assign classes to vary spans
+      collections.forEach((c, idx) => {
+        const tile = document.createElement("article");
+        tile.className = "tile " + (idx < 2 ? "four" : "third");
+        tile.tabIndex = 0;
+        tile.setAttribute("role", "button");
+        tile.setAttribute("aria-label", `Open ${c.name} gallery`);
+
+        tile.innerHTML = `
+          <figure>
+            <div class="media">
+              <img src="${c.cover}" alt="${c.name} cover" loading="eager" />
+              <div class="overlay"></div>
+            </div>
+            <figcaption class="meta">
+              <div class="label">
+                <div class="title">${c.name}</div>
+                <div class="count">${c.files.length} photo${c.files.length === 1 ? "" : "s"}</div>
+              </div>
+              <span class="chip">View</span>
+            </figcaption>
+          </figure>
+        `;
+
+        tile.addEventListener("click", () => openGallery(c.key));
+        tile.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") openGallery(c.key);
+        });
+
+        catalogGrid.appendChild(tile);
+      });
+    }
+
+    // --------- gallery ----------
+    function openGallery(key) {
+      const found = collections.find(c => c.key === key);
+      if (!found) return;
+
+      activeCollection = found;
+      galleryTitle.textContent = found.name;
+      gallerySub.textContent = `${found.files.length} photo${found.files.length === 1 ? "" : "s"}`;
+
+      thumbGrid.innerHTML = "";
+      found.files.forEach((src, i) => {
+        const card = document.createElement("div");
+        card.className = "thumb";
+        card.tabIndex = 0;
+        card.setAttribute("role", "button");
+        card.setAttribute("aria-label", `Open image ${i + 1}`);
+
+        card.innerHTML = `
+          <span class="num">${String(i + 1).padStart(2,"0")}</span>
+          <img src="${src}" alt="${found.name} image ${i + 1}" loading="lazy" />
+        `;
+
+        card.addEventListener("click", () => openLightbox(i));
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") openLightbox(i);
+        });
+
+        thumbGrid.appendChild(card);
+      });
+
+      // swap views
+      homeView.style.display = "none";
+      galleryView.classList.add("active");
+      backBtn.hidden = false;
+
+      // update URL hash for shareability
+      location.hash = key;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function goHome() {
+      activeCollection = null;
+      galleryView.classList.remove("active");
+      homeView.style.display = "block";
+      backBtn.hidden = true;
+      location.hash = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    backBtn.addEventListener("click", goHome);
+    homeBtn.addEventListener("click", goHome);
+
+    // --------- lightbox ----------
+    function openLightbox(index) {
+      if (!activeCollection) return;
+      lightboxIndex = index;
+      updateLightbox();
+      lightbox.classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function updateLightbox() {
+      const src = activeCollection.files[lightboxIndex];
+      lbImg.src = src;
+      lbCaption.textContent = `${activeCollection.name} — ${lightboxIndex + 1} / ${activeCollection.files.length}`;
+    }
+
+    function prevImage() {
+      if (!activeCollection) return;
+      lightboxIndex = (lightboxIndex - 1 + activeCollection.files.length) % activeCollection.files.length;
+      updateLightbox();
+    }
+
+    function nextImage() {
+      if (!activeCollection) return;
+      lightboxIndex = (lightboxIndex + 1) % activeCollection.files.length;
+      updateLightbox();
+    }
+
+    prevBtn.addEventListener("click", prevImage);
+    nextBtn.addEventListener("click", nextImage);
+    closeBtn.addEventListener("click", closeLightbox);
+
+    lightbox.addEventListener("click", (e) => {
+      // click outside card closes
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (!lightbox.classList.contains("open")) return;
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "ArrowRight") nextImage();
+    });
+
+    // --------- load by hash (so you can link directly to a collection) ----------
+    function openFromHash() {
+      const key = (location.hash || "").replace("#", "").trim();
+      if (!key) return;
+      const exists = collections.some(c => c.key === key);
+      if (exists) openGallery(key);
+    }
+
+    // init
+    renderCatalog();
+    openFromHash();
+  </script>
+</body>
+</html>
